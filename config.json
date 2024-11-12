@@ -1,0 +1,33 @@
+{
+  "modules-left": [],
+  "modules-center": [
+    "custom/message"
+  ],
+  "modules-right": [
+    "battery",
+    "tray",
+    "custom/clock"
+  ],
+  "battery": {
+    "format": "{capacity}% {time}",
+    "format-charging": "{capacity}% | Charging {time}",
+    "format-discharging": "{capacity}% | Discharging {time}",
+    "on-click": "gnome-control-center power"
+  },
+  "custom/clock": {
+    "exec": "date +'%Y-%m-%d %H:%M:%S'",
+    "interval": 1,
+    "tooltip": false,
+    "on-click": "alacritty -e 'calcurse'"
+  },
+  "tray": {
+    "width": 20
+  },
+
+"custom/message": {
+  "exec": "while true; do quote=$(fortune); [ -n \"$quote\" ] && [ ${#quote} -le 100 ] && echo \"$quote\" | tr -d '\\n' && break; done",
+  "interval": 3600,
+  "tooltip": false
+}
+
+}
