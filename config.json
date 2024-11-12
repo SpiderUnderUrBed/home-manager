@@ -15,7 +15,7 @@
     "on-click": "gnome-control-center power"
   },
   "custom/clock": {
-    "exec": "date +'%Y-%m-%d %H:%M:%S'",
+    "exec": "date +'%Y-%m-%d %I:%M %p'",
     "interval": 1,
     "tooltip": false,
     "on-click": "alacritty -e 'calcurse'"

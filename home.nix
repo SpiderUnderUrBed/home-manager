@@ -140,6 +140,7 @@ wayland.windowManager.hyprland = hyprlandConfig;
  #};
  programs = {
     waybar = waybarConfig;
+   # waybar = waybarConfig // { enable = true; };
     nixcord = {
       vesktop.enable = true;
       enable = true;
@@ -258,6 +259,8 @@ wayland.windowManager.hyprland = hyprlandConfig;
 #        eval $(ksuperkey)
         alias nix-gc='nix-collect-garbage'
         alias facer='/etc/nixos/acer-predator-turbo-and-rgb-keyboard-linux-module/facer_rgb.py'
+	alias clipboard='copyq "copy(input())"'
+	#alias clipboard='xclip -selection clipboard'
         if not [ ! -x /bin/sudo ]; then
                 alias sudo='/bin/sudo '
         else
