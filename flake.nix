@@ -37,6 +37,8 @@
 #      inputs.nixpkgs.follows = "nixpkgs";
 #    };
    # nix-flatpak.url = "github:gmodena/nix-flatpak";
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,7 +47,7 @@
  #   flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = { 
+  outputs = inputs @ { 
         self,
         nixpkgs, 
  #       auto-cpufreq, 
@@ -63,6 +65,7 @@
    #     lanzaboote, 
         #flake-parts, 
         #devenv,
+        nix-index-database,
 	sublimation, 
         ... }:
   let
@@ -87,6 +90,35 @@
         git-credential-manager = pkgs.git-credential-manager;
         mkShell = pkgs.mkShell;
     };
+      hm-modules = [
+	  nix-index-database.hmModules.nix-index
+          sublimation.homeManagerModules.sublimation
+          nixcord.homeManagerModules.nixcord
+          (import ./home.nix { 
+                inherit 
+                   pkgs 
+                   lib
+                #   config
+                   #(specialArgs = { inherit gitCredentialManager; }) 
+                   specialArgs
+                   gitCredentialManager; 
+                })
+      ];	
+      specialArgs = { inherit gitCredentialManager; };
+      lib = pkgs.lib;
+      mkNixosHost = import ./hydenix/hosts/nixos;
+      nix-vm = import ./hydenix/hosts/vm/nix-vm.nix;
+      userConfig = import ./hydenix/config.nix;
+      commonArgs = {
+        inherit
+          nixpkgs
+          pkgs
+          home-manager
+          system
+          userConfig
+          nix-index-database
+          ;
+      };
   in
   {
  #   nixosConfigurations.daspidercave = nixpkgs.lib.nixosSystem {
@@ -101,25 +133,40 @@
 #	];
 #    };
     homeConfigurations = {
-      home-manager.useGlobalPkgs = true;
+      home-manager.useGlobalPkgs = true;      
+      #home-manager.useUserPackages = false;
+      home-manager.specialisation.hydenix.configuration = {
+         modules = hm-modules ++ [
+               ./hydenix/hosts/nixos/home.nix
+         ];
+      }; 
       spiderunderurbed = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+      #home-manager.specialisation.hydenix.configuration = {
+      #   modules = hm-modules ++ [
+      #         ./hydenix/hosts/nixos/home.nix
+      #   ];
+      #}; 
 # gitCredentialManager; 
 #system;
 #        homeDirectory = "/home/spiderunderurbed";
 #        username = "spiderunderurbed";
-	extraSpecialArgs = {
-           gitCredentialManager = gitCredentialManager;
-        };
+#	extraSpecialArgs = {
+ #          gitCredentialManager = gitCredentialManager;
+#	   
+ #       };
+#	  specialisation.hydenix.configuration = {
+#		modules = hm-modules ++ [
+#			./hydenix/hosts/nixos/home.nix
+#		];
+#	  }; 
+          extraSpecialArgs = {
+            inherit userConfig;
+            inherit inputs;
+          };
         #imports = [
 	#shared
-	modules = [
-	  sublimation.homeManagerModules.sublimation
-	  nixcord.homeManagerModules.nixcord
-          ./home.nix
-	 # ./hyprland.nix
-        ];
-
+	modules = hm-modules;
  #       home = {
  #         stateVersion = "23.11";
  #         packages = [

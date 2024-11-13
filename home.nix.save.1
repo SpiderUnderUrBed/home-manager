@@ -1,4 +1,4 @@
-{ pkgs, lib, specialArgs ? {}, ... }:
+{ pkgs, config, lib, specialArgs, ... }:
 #let keychain = pkgs.writeShellApplication {
 #       name = "keychain";
 #       runtimeInputs = [ pkgs.keychain ];
@@ -26,19 +26,14 @@ let keychain = "null";
 #hyprlandConfig = ((import ./hyprland.nix).hyprlandConfig) // { enable = true; };
  #hyprlandConfig = ((import ./hyprland.nix) {config lib pkgs}).hyprlandConfig // {enable = false;};
 #hyprlandConfig = ((import ./hyprland.nix) { config = config; lib = lib; pkgs = pkgs; }).hyprlandConfig // { enable = false; };
-rofiEnable = true;
-hypridleEnable = true;
-#hyprlockEnable = false;
-hyprpaperEnable = true;
-waybarConfig = ((import ./waybar.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
-hyprlandConfig = ((import ./hyprland.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
-hyprlockConfig = ((import ./hyprlock.nix) { lib = lib; pkgs = pkgs; }) // { enable = true; };
+waybarConfig = ((import ./waybar.nix) { config = config; lib = lib; pkgs = pkgs; }) // { enable = true; };
+hyprlandConfig = ((import ./hyprland.nix) { config = config; lib = lib; pkgs = pkgs; }) // { enable = true; };
 in
 {
  # imports = lib.attrValues nur.repos.moredhel.hmModules.rawModules;
   home = {
-    username = lib.mkForce "spiderunderurbed";
-    homeDirectory = lib.mkForce "/home/spiderunderurbed";
+    username = "spiderunderurbed";
+    homeDirectory = "/home/spiderunderurbed";
   };
   home.enableNixpkgsReleaseCheck = false;
   home.stateVersion = "24.11";
@@ -50,29 +45,9 @@ in
     GSK_RENDERER = "gl";
   };
   services = {
-    hyprpaper = {
-	enable = hyprpaperEnable;
-	package = pkgs.hyprpaper;
-	settings = {
-	  ipc = "off";
-          splash = true;
-          splash_offset = 2.0;
-
-          preload = [
-		"/home/spiderunderurbed/backrounds/cotl-1.jpg"
-		"/home/spiderunderurbed/backrounds/cotl-2.png"
-          ];
-	#   [ "/share/wallpapers/buttons.png" "/share/wallpapers/cat_pacman.png" ];
-
-          wallpaper = [
-            "eDP-1,/home/spiderunderurbed/backrounds/cotl-2.png"
-            "HDMI-A-1,/home/spiderunderurbed/backrounds/cotl-2.png"
-  	  ];
-	};
-    };
     swayosd.enable = true;
     hypridle = {
-	enable = hypridleEnable;
+	enable = true;
 	settings = {
         general = {
             after_sleep_cmd = "hyprctl dispatch dpms on";
@@ -82,7 +57,7 @@ in
 
           listener = [
             {
-               timeout = 240;
+               timeout = 900;
                on-timeout = "hyprlock";
             }
             {
@@ -141,9 +116,7 @@ in
 #          };
 #         };
 #      };
-wayland.windowManager.hyprland = 
-#{ enable = true; };
-hyprlandConfig;
+wayland.windowManager.hyprland = hyprlandConfig;
 # { inherit (hyprlandConfig); };
  #wayland.windowManager.hyprland = 
 #{
@@ -188,11 +161,22 @@ hyprlandConfig;
 #   '';
  #};
  programs = {
-   rofi = {
-     enable = rofiEnable;
+   hyprlock = {
+	package = pkgs.hyprlock;
+	enable = true; 
+   	settings = {
+	  general = {
+	    grace = 5;
+#	    hide_cursor = true;
+	  };
+	  backround = {
+	    path = "/home/spiderunderurbed/cotl-1.
+	   #/home/spiderunderurbed/test.jpg
+           #/home/spiderunderurbed/test2.png 
+	  };
+	};
    };
-#   hyprlock = hyprlockConfig;
-#   waybar = waybarConfig;
+   waybar = waybarConfig;
    # waybar = waybarConfig // { enable = true; };
     nixcord = {
       vesktop.enable = true;
@@ -310,8 +294,6 @@ hyprlandConfig;
       enable = true;
       bashrcExtra = ''
 #        eval $(ksuperkey)
-#	alias pasystray-screen='screen -S pasystray-session -d -m pasystray'
-	alias pasystrayd='screen -S pasystray-session -d -m pasystray'
         alias nix-gc='nix-collect-garbage'
         alias facer='/etc/nixos/acer-predator-turbo-and-rgb-keyboard-linux-module/facer_rgb.py'
 	alias clipboard='copyq "copy(input())"'

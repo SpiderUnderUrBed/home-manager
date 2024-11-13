@@ -1,0 +1,3 @@
+[submodule "hydenix"]
+	path = hydenix
+	url = https://github.com/richen604/hydenix

@@ -1,4 +1,4 @@
-{ gitCredentialManager ? {}, options ? {}, specialArgs ? {}, modulesPath ? {}, config, lib, pkgs }:
+{ gitCredentialManager ? {}, options ? {}, specialArgs ? {}, modulesPath ? {}, lib, pkgs }:
 let
 waybarConfig = {
  style = (builtins.readFile ./style.css);
