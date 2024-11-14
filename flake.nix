@@ -26,6 +26,7 @@
     nix-revsocks.url = "github:SpiderUnderUrBed/nix-revsocks";
 #    wallpaper-changer.url = "github:SpiderUnderUrBed/wallpaper-changer";
     sublimation.url = "github:SpiderUnderUrBed/sublimation";
+ 
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,6 +44,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+#    hydenix.url = "git+file:///home/spiderunderurbed/home-manager/hyprland/hydenix/";
 #    devenv.url = "github:cachix/devenv";
  #   flake-parts.url = "github:hercules-ci/flake-parts";
   };
@@ -90,21 +92,31 @@
         git-credential-manager = pkgs.git-credential-manager;
         mkShell = pkgs.mkShell;
     };
+      #hm-lib = home-manager.lib;
       hm-modules = [
 	  nix-index-database.hmModules.nix-index
           sublimation.homeManagerModules.sublimation
           nixcord.homeManagerModules.nixcord
-          (import ./home.nix { 
-                inherit 
-                   pkgs 
-                   lib
-                #   config
-                   #(specialArgs = { inherit gitCredentialManager; }) 
-                   specialArgs
-                   gitCredentialManager; 
-                })
+	  #(import ./general.nix { 
+            #      inherit 
+            #         pkgs 
+            #         lib
+                     #   config
+                     #(specialArgs = { inherit gitCredentialManager; }) 
+#                     specialArgs = newSpecialArgs;
+           #          specialArgs
+          #           gitCredentialManager;
+#                  lib = home-manager.lib;  
+         # })
+
       ];	
-      specialArgs = { inherit gitCredentialManager; };
+      specialArgs = { 
+	     inherit 
+		gitCredentialManager
+		home-manager 
+		hm-modules;
+	#	isSpecialisation = false;
+	 };
       lib = pkgs.lib;
       mkNixosHost = import ./hydenix/hosts/nixos;
       nix-vm = import ./hydenix/hosts/vm/nix-vm.nix;
@@ -135,18 +147,21 @@
     homeConfigurations = {
       home-manager.useGlobalPkgs = true;      
       #home-manager.useUserPackages = false;
-      home-manager.specialisation.hydenix.configuration = {
-         modules = hm-modules ++ [
-               ./hydenix/hosts/nixos/home.nix
-         ];
-      }; 
+#      home-manager.specialisation.hydenix.configuration = {
+#         modules = hm-modules ++ [
+#               ./hydenix/hosts/nixos/home.nix
+#         ];
+#      }; 
       spiderunderurbed = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-      #home-manager.specialisation.hydenix.configuration = {
-      #   modules = hm-modules ++ [
-      #         ./hydenix/hosts/nixos/home.nix
-      #   ];
-      #}; 
+#	home.
+#          specialisation.hydenix.configuration = {
+#            modules = hm-modules ++ [
+#                 ./hydenix/hosts/nixos/home.nix
+#            ];
+#          }; 
+	#};
+	
 # gitCredentialManager; 
 #system;
 #        homeDirectory = "/home/spiderunderurbed";
@@ -166,7 +181,17 @@
           };
         #imports = [
 	#shared
-	modules = hm-modules;
+	modules = [
+          (import ./home.nix { 
+                inherit 
+                   pkgs 
+                   lib
+                #   config
+                   #(specialArgs = { inherit gitCredentialManager; }) 
+                   specialArgs
+                   gitCredentialManager; 
+                })		
+	];
  #       home = {
  #         stateVersion = "23.11";
  #         packages = [
@@ -174,7 +199,7 @@
  #         ];
  #       };
 
-      };
+	};
     };
   };
 }

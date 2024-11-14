@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  fonts = import ../hydenix/hydenix/sources/hyde-fonts.nix { inherit pkgs; };
+  fonts = import ../../hydenix/hydenix/sources/hyde-fonts.nix { inherit pkgs; };
 in
 {
   home.packages = with pkgs; [
