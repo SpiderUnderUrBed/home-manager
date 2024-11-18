@@ -1,14 +1,27 @@
 { pkgs, lib, specialArgs ? {}, ... }:
 let
   gitCredentialManager = specialArgs.gitCredentialManager;
+  general = (import ./general.nix { 
+   inherit 
+    pkgs 
+    lib
+    #   config
+    #(specialArgs = { inherit gitCredentialManager; }) 
+#   specialArgs = newSpecialArgs;
+    specialArgs
+    gitCredentialManager;
+#   lib = home-manager.lib;  
+  });
   #specialisation = "hydenix";
 in
 {
      
  imports = specialArgs.hm-modules ++ [ 
-	(import ./activate.nix {
-	inherit pkgs lib specialArgs;
-	})
+	general
+	./themes
+	#(import ./activate.nix {
+	#inherit pkgs lib specialArgs;
+	#})
   ];
   home = {
     username = lib.mkForce "spiderunderurbed";
@@ -21,18 +34,18 @@ in
       imports = 
 	#specialArgs.hm-modules ++ [ 
 	 [
-	  ./themes
-	  (import ./hyprland/general.nix { 
-                  inherit 
-                     pkgs 
-                     lib
-                     #   config
-                     #(specialArgs = { inherit gitCredentialManager; }) 
-#                     specialArgs = newSpecialArgs;
-                     specialArgs
-                     gitCredentialManager;
+#	  ./themes
+#	  (import ./general.nix { 
+#                  inherit 
+#                     pkgs 
+#                     lib
+#                     #   config
+#                     #(specialArgs = { inherit gitCredentialManager; }) 
+##                     specialArgs = newSpecialArgs;
+#                     specialArgs
+#                     gitCredentialManager;
 #                  lib = home-manager.lib;  
-          })
+#          })
       ];
     };  
     specialisation.hydenix.configuration = {
@@ -40,8 +53,8 @@ in
 		#specialArgs.hm-modules ++ 
 		[
 		 #(import ./b)
-		 (import ./hyprland/basic.nix { inherit pkgs lib; })		 
-                 ./hydenix/hosts/nixos/home.nix
+		 (import ./basic.nix { inherit pkgs lib; })		 
+#                 ./hydenix/hosts/nixos/home.nix
         	];
      };   
 }

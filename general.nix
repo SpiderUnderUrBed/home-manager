@@ -27,13 +27,14 @@ let keychain = "null";
  #hyprlandConfig = ((import ./hyprland.nix) {config lib pkgs}).hyprlandConfig // {enable = false;};
 #hyprlandConfig = ((import ./hyprland.nix) { config = config; lib = lib; pkgs = pkgs; }).hyprlandConfig // { enable = false; };
 #gitCredentialManager = specialArgs.gitCredentialManager;
-rofiEnable = true;
+wofiEnable = true;
+rofiEnable = false;
 hypridleEnable = true;
 #hyprlockEnable = false;
 hyprpaperEnable = true;
-waybarConfig = ((import ./waybar.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
-hyprlandConfig = ((import ./hyprland.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
-hyprlockConfig = ((import ./hyprlock.nix) { lib = lib; pkgs = pkgs; }) // { enable = true; };
+waybarConfig = ((import ./hyprland/waybar.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
+hyprlandConfig = ((import ./hyprland/hyprland.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
+hyprlockConfig = ((import ./hyprland/hyprlock.nix) { lib = lib; pkgs = pkgs; }) // { enable = true; };
 in
 {
  # imports = lib.attrValues nur.repos.moredhel.hmModules.rawModules;
@@ -190,11 +191,14 @@ hyprlandConfig;
 #   '';
  #};
  programs = {
-   rofi = {
-     enable = rofiEnable;
+   wofi = {
+     enable = wofiEnable;
    };
-#   hyprlock = hyprlockConfig;
-#   waybar = waybarConfig;
+   rofi = {
+     enable = lib.mkForce rofiEnable;
+   };
+   hyprlock = hyprlockConfig;
+    waybar = waybarConfig;
    # waybar = waybarConfig // { enable = true; };
     nixcord = {
       vesktop.enable = true;
@@ -219,6 +223,9 @@ hyprlandConfig;
 #	userPlugins = {   
 #          hideUsers = "github:SpiderUnderUrBed/hideUsers/77d0b79b37ff422ae817830f1fe26372af6f2cbce6c327c7763bc2f62858eed1";
 #        };
+	themeLinks = [
+	  "https://raw.githubusercontent.com/SpaceTheme/Discord/refs/heads/main/SpaceTheme.theme.css"
+	];
 	enableReactDevtools = true;
 	plugins = {
 	 # hideUsers.enable = true;
@@ -316,7 +323,7 @@ hyprlandConfig;
 	alias facer='/etc/nixos/acer-predator-turbo-and-rgb-keyboard-linux-module/facer_rgb.py'
 	alias pasystrayd='screen -S pasystray-session -d -m pasystray'
         alias nix-gc='nix-collect-garbage'
-        
+        alias inxi-tmp="nix-shell -p inxi.out --run 'inxi'"
 	alias clipboard='copyq "copy(input())"'
 	#alias clipboard='xclip -selection clipboard'
         if ! [ ! -x /bin/sudo ]; then
@@ -337,7 +344,7 @@ hyprlandConfig;
         hyfetch
 #       ##${keychain}/bin/keychain
 #        . ~/oldbashrc
-	echo test
+#	echo test
       '';
     };
  #  nix-revsocks = {

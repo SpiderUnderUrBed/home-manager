@@ -1,6 +1,6 @@
 { specialArgs, pkgs, lib, ... }: 
 let
-  enable = true;
+  enable = false;
   type = "general";
 
   # Define the derivation for the script using resholve.phraseSolution

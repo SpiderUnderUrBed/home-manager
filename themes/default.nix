@@ -1,14 +1,16 @@
-{ pkgs, ... }: {
-  qt = {
-      enable = true;
-      platformTheme.name = "gtk";
-  };
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
-    size = 20;
-  };
+{ pkgs, lib, ... }: 
+
+{
+#  qt = {
+#      enable = true;
+#      platformTheme.name = "gtk";
+#  };
+#  home.pointerCursor = {
+#    gtk.enable = true;
+#    package = pkgs.bibata-cursors;
+#    name = "Bibata-Modern-Classic";
+#    size = lib.mkForce 20;
+#  };
   gtk = {
     enable = true;
     iconTheme = {
@@ -19,7 +21,7 @@
       name = "Papirus-Dark";
     };
     theme = {
-        name = "catppuccin-macchiato-mauve-compact";
+        name = lib.mkForce "catppuccin-macchiato-mauve-compact";
         package = pkgs.catppuccin-gtk.override {
           accents = ["mauve"];
           variant = "macchiato";
