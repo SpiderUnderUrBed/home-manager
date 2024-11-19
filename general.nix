@@ -85,7 +85,8 @@ in
 
           listener = [
             {
-               timeout = 240;
+  	       timeout = 1200;  
+  #           timeout = 480;
                on-timeout = "hyprlock";
             }
             {
