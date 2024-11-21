@@ -26,7 +26,7 @@
     nix-revsocks.url = "github:SpiderUnderUrBed/nix-revsocks";
 #    wallpaper-changer.url = "github:SpiderUnderUrBed/wallpaper-changer";
     sublimation.url = "github:SpiderUnderUrBed/sublimation";
- 
+    walker.url = "github:abenz1267/walker"; 
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -181,12 +181,14 @@
           };
         #imports = [
 	#shared
+	#imports = [inputs.walker.homeManagerModules.default];
 	modules = [
           (import ./home.nix { 
                 inherit 
                    pkgs 
                    lib
-                #   config
+                   #config
+		   inputs
                    #(specialArgs = { inherit gitCredentialManager; }) 
                    specialArgs
                    gitCredentialManager; 

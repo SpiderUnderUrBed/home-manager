@@ -1,4 +1,4 @@
-{ pkgs, lib, specialArgs ? {}, ... }:
+{ pkgs, lib, inputs, specialArgs ? {}, ... }:
 #let keychain = pkgs.writeShellApplication {
 #       name = "keychain";
 #       runtimeInputs = [ pkgs.keychain ];
@@ -6,35 +6,6 @@
 #    };
 # in
 let keychain = "null";
-#  regex = "github:([[:alnum:].-]+)/([[:alnum:]/-]+)/([0-9a-f]{40})";
-#  userPlugins = value: { rev, branch ? null, deepClone ? false, fetchSubmodules ? false }: let
-#    matches = builtins.match regex value;
-#    owner = builtins.elemAt matches 0;
-#    repo = builtins.elemAt matches 1;
-#  in builtins.fetchGit {
-#    url = "https://github.com/${owner}/${repo}";
-#    inherit rev;
-#    inherit branch;
-#    inherit deepClone;
-#    inherit fetchSubmodules;
-#  };
-# nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {};
-#hyprlandConfig = { 
-#inherit (import ./hyprland.nix);
-#enable = true;
-#};
-#hyprlandConfig = ((import ./hyprland.nix).hyprlandConfig) // { enable = true; };
- #hyprlandConfig = ((import ./hyprland.nix) {config lib pkgs}).hyprlandConfig // {enable = false;};
-#hyprlandConfig = ((import ./hyprland.nix) { config = config; lib = lib; pkgs = pkgs; }).hyprlandConfig // { enable = false; };
-#gitCredentialManager = specialArgs.gitCredentialManager;
-wofiEnable = true;
-rofiEnable = false;
-hypridleEnable = true;
-#hyprlockEnable = false;
-hyprpaperEnable = true;
-waybarConfig = ((import ./hyprland/waybar.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
-hyprlandConfig = ((import ./hyprland/hyprland.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
-hyprlockConfig = ((import ./hyprland/hyprlock.nix) { lib = lib; pkgs = pkgs; }) // { enable = true; };
 in
 {
  # imports = lib.attrValues nur.repos.moredhel.hmModules.rawModules;
@@ -47,56 +18,58 @@ in
  #     };
   home.packages = [
     # (import ./modules/wallpaper-changer  { folder = "./wallpapers"; })
+    #inputs.walker.packages.x86_64-linux.default
   ];
   home.sessionVariables = {
 #GSK_RENDERER=gl
     GSK_RENDERER = "gl";
   };
+  imports = [ (import ./primary-wm.nix { inherit pkgs lib inputs; }) ];
   services = {
-    hyprpaper = {
-	enable = hyprpaperEnable;
-	package = pkgs.hyprpaper;
-	settings = {
-	  ipc = "off";
-          splash = true;
-          splash_offset = 2.0;
+    #hyprpaper = {
+   #	enable = hyprpaperEnable;
+    #	package = pkgs.hyprpaper;
+    #	settings = {
+    #	  ipc = "off";
+    #      splash = true;
+    #      splash_offset = 2.0;
 
-          preload = [
-		"/home/spiderunderurbed/backrounds/cotl-1.jpg"
-		"/home/spiderunderurbed/backrounds/cotl-2.png"
-          ];
+    #      preload = [
+    #		"/home/spiderunderurbed/backrounds/cotl-1.jpg"
+    #		"/home/spiderunderurbed/backrounds/cotl-2.png"
+    #      ];
 	#   [ "/share/wallpapers/buttons.png" "/share/wallpapers/cat_pacman.png" ];
 
-          wallpaper = [
-            "eDP-1,/home/spiderunderurbed/backrounds/cotl-2.png"
-            "HDMI-A-1,/home/spiderunderurbed/backrounds/cotl-2.png"
-  	  ];
-	};
-    };
-    swayosd.enable = true;
-    hypridle = {
-	enable = hypridleEnable;
-	settings = {
-        general = {
-            after_sleep_cmd = "hyprctl dispatch dpms on";
-            ignore_dbus_inhibit = false;
-            lock_cmd = "hyprlock";
-  	  };
+    #      wallpaper = [
+    #        "eDP-1,/home/spiderunderurbed/backrounds/cotl-2.png"
+    #        "HDMI-A-1,/home/spiderunderurbed/backrounds/cotl-2.png"
+    #	  ];
+    #	};
+    #};
+  #  swayosd.enable = true;
+ #   hypridle = {
+#	enable = hypridleEnable;
+#	settings = {
+ #       general = {
+ #           after_sleep_cmd = "hyprctl dispatch dpms on";
+ #           ignore_dbus_inhibit = false;
+ #           lock_cmd = "hyprlock";
+ # 	  };
 
-          listener = [
-            {
-  	       timeout = 1200;  
-  #           timeout = 480;
-               on-timeout = "hyprlock";
-            }
-            {
-                timeout = 1200;
-                on-timeout = "hyprctl dispatch dpms off";
-     		on-resume = "hyprctl dispatch dpms on";
-    	    }
-  	  ];
-	};	
-    }; 
+ #         listener = [
+ #           {
+ # 	       timeout = 1200;  
+ # #           timeout = 480;
+ #              on-timeout = "hyprlock";
+ #           }
+ #           {
+ #               timeout = 1200;
+ #               on-timeout = "hyprctl dispatch dpms off";
+ #    		on-resume = "hyprctl dispatch dpms on";
+ #   	    }
+ # 	  ];
+#	};	
+#    }; 
  };
 #  services.unison = {
 #    enable = lib.mkOverride true;
@@ -130,6 +103,7 @@ in
 #    config.osc = "no";
  #   scripts = [ pkgs.mpvScripts.thumbfast ];
 #  };  
+#xwayland-satellite
 #  global-keybind = {
 #   enable = true;
 #   device = "/dev/input/event0";
@@ -145,9 +119,9 @@ in
 #          };
 #         };
 #      };
-wayland.windowManager.hyprland = 
+#wayland.windowManager.hyprland = 
 #{ enable = true; };
-hyprlandConfig;
+#hyprlandConfig;
 # { inherit (hyprlandConfig); };
  #wayland.windowManager.hyprland = 
 #{
@@ -192,14 +166,14 @@ hyprlandConfig;
 #   '';
  #};
  programs = {
-   wofi = {
-     enable = wofiEnable;
-   };
-   rofi = {
-     enable = lib.mkForce rofiEnable;
-   };
-   hyprlock = hyprlockConfig;
-    waybar = waybarConfig;
+#   wofi = {
+#     enable = wofiEnable;
+#   };
+#   rofi = {
+#     enable = lib.mkForce rofiEnable;
+#   };
+#   hyprlock = hyprlockConfig;
+#    waybar = waybarConfig;
    # waybar = waybarConfig // { enable = true; };
     nixcord = {
       vesktop.enable = true;
@@ -321,8 +295,9 @@ hyprlandConfig;
       bashrcExtra = ''
 #        eval $(ksuperkey)
 #	alias pasystray-screen='screen -S pasystray-session -d -m pasystray'
+	alias xwayland-rootless='xwayland-satellite' 
 	alias facer='/etc/nixos/acer-predator-turbo-and-rgb-keyboard-linux-module/facer_rgb.py'
-	alias pasystrayd='screen -S pasystray-session -d -m pasystray'
+	#alias pasystrayd='screen -S pasystray-session -d -m pasystray'
         alias nix-gc='nix-collect-garbage'
         alias inxi-tmp="nix-shell -p inxi.out --run 'inxi'"
 	alias clipboard='copyq "copy(input())"'

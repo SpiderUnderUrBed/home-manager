@@ -14,6 +14,27 @@
         "url": "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz"
       }
     },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "walker",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1719994518,
+        "narHash": "sha256-pQMhCCHyQGRzdfAkdJ4cIWiw+JNuWsTX7f0ZYSyz0VY=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "9227223f6d922fee3c7b190b2cc238a99527bbb7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -201,6 +222,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_5": {
+      "locked": {
+        "lastModified": 1720957393,
+        "narHash": "sha256-oedh2RwpjEa+TNxhg5Je9Ch6d3W1NKi7DbRO1ziHemA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "693bc46d169f5af9c992095736e82c3488bf7dbb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -232,7 +269,8 @@
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_3",
         "plasma-manager": "plasma-manager",
-        "sublimation": "sublimation"
+        "sublimation": "sublimation",
+        "walker": "walker"
       }
     },
     "sublimation": {
@@ -251,6 +289,25 @@
       "original": {
         "owner": "SpiderUnderUrBed",
         "repo": "sublimation",
+        "type": "github"
+      }
+    },
+    "walker": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": "nixpkgs_5"
+      },
+      "locked": {
+        "lastModified": 1732172995,
+        "narHash": "sha256-XnvN3hAcJ44Zh0KQChMpLq7aQJPjA/Mb+nobjggmp/Q=",
+        "owner": "abenz1267",
+        "repo": "walker",
+        "rev": "f45d43f910217a1b55dbdb22ed1a34a1cb5b94ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "abenz1267",
+        "repo": "walker",
         "type": "github"
       }
     }

@@ -1,11 +1,12 @@
-{ pkgs, lib, specialArgs ? {}, ... }:
+{ pkgs, lib, inputs, specialArgs ? {}, ... }:
 let
   gitCredentialManager = specialArgs.gitCredentialManager;
   general = (import ./general.nix { 
    inherit 
     pkgs 
     lib
-    #   config
+#    config
+    inputs
     #(specialArgs = { inherit gitCredentialManager; }) 
 #   specialArgs = newSpecialArgs;
     specialArgs
