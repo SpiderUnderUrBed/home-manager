@@ -22,6 +22,7 @@ in
   ];
   home.sessionVariables = {
 #GSK_RENDERER=gl
+    BROWSER = "librewolf";
     GSK_RENDERER = "gl";
   };
   imports = [ (import ./primary-wm.nix { inherit pkgs lib inputs; }) ];
