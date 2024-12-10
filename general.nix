@@ -72,6 +72,25 @@ in
 #	};	
 #    }; 
  };
+#  systemd.user.services.dunst = {
+#        Unit = {
+#          Description = "Dunst notification daemon";
+#          After = [ "graphical-session-pre.target" ];
+#          PartOf = [ "graphical-session.target" ];
+#        };
+
+#        Service = {
+#          Type = "dbus";
+#          BusName = "org.freedesktop.Notifications";
+#          ExecStart = lib.escapeShellArgs ([ "${cfg.package}/bin/dunst" ] ++
+#            # Using `-config` breaks dunst's drop-ins, so only use it when an alternative path is set
+#            optionals (cfg.configFile != null) [ "-config" cfg.configFile ]);
+#          Environment = optionalString (cfg.waylandDisplay != "")
+#            "WAYLAND_DISPLAY=${cfg.waylandDisplay}";
+#        };
+#      };
+#    };
+#  };
 #  services.unison = {
 #    enable = lib.mkOverride true;
 #    profiles = {

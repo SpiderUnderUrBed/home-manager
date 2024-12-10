@@ -16,10 +16,14 @@ let
   #specialisation = "hydenix";
 in
 {
-     
+ disabledModules = [
+    "services/dunst.nix"
+#    "modules/services/dunst.nix" 
+ ];     
  imports = specialArgs.hm-modules ++ [ 
 	general
 	./themes
+	./modules/dunst.nix
 	#(import ./activate.nix {
 	#inherit pkgs lib specialArgs;
 	#})

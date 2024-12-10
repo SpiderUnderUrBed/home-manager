@@ -7,7 +7,7 @@ hypridleEnable = true;
 walkerEnable = true;
 hyprpaperEnable = true;
 waybarConfig = ((import ./hyprland/waybar.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
-hyprlandConfig = ((import ./hyprland/hyprland.nix) {  lib = lib; pkgs = pkgs; }) // { enable = true; };
+hyprlandConfig = ((import ./hyprland/hyprland.nix) {  lib = lib; pkgs = pkgs; inputs = inputs; }) // { enable = true; };
 hyprlockConfig = ((import ./hyprland/hyprlock.nix) { lib = lib; pkgs = pkgs; }) // { enable = true; };
 in 
 {
@@ -53,7 +53,7 @@ in
 	enable = true;
 	iconTheme = {
 	  name = "Adwaita";
-	  package = pkgs.gnome.adwaita-icon-theme;
+	  package = pkgs.adwaita-icon-theme;
 	};
 	settings = {
 #	 icon_position = "off";

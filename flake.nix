@@ -7,8 +7,8 @@
      nixcord = {
        #url = "github:kaylorben/nixcord";
 #	url = "github:AwesomeQubic/nixcord";
-	url = "github:SpiderUnderUrBed/nixcord/testing";
-#	url = "github:SpiderUnderUrBed/nixcord";
+#	url = "github:SpiderUnderUrBed/nixcord/testing";
+	url = "github:SpiderUnderUrBed/nixcord";
      };
 #    auto-cpufreq = {
 #      url = "github:AdnanHodzic/auto-cpufreq";
@@ -25,8 +25,25 @@
 #    };
     nix-revsocks.url = "github:SpiderUnderUrBed/nix-revsocks";
 #    wallpaper-changer.url = "github:SpiderUnderUrBed/wallpaper-changer";
+    hyprland = {
+	#type = "git";
+	url = "github:hyprwm/Hyprland";
+        #url = "https://github.com/hyprwm/Hyprland";
+        #submodules = true;
+        inputs.nixpkgs.follows = "nixpkgs";
+	#ref = "refs/tags/v0.41.2"; 
+	#rev = "a3d3b4fd64a51a8c1663b450bd2a408f1f0fa9b3";
+    };
     sublimation.url = "github:SpiderUnderUrBed/sublimation";
     walker.url = "github:abenz1267/walker"; 
+    hyprland-plugins = {
+     url = "github:hyprwm/hyprland-plugins";
+     inputs.hyprland.follows = "hyprland";
+    };
+    #hyprspace = {	
+    #	url = "github:KZDKM/Hyprspace";
+    #	inputs.hyprland.follows = "hyprland";
+    #};
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -61,7 +78,10 @@
         plasma-manager, 
   #      nix-software-center, 
   #      flake-compat, 
-#       wallpaper-changer, 
+#       wallpaper-changer,
+	hyprland, 
+	hyprland-plugins,
+#	hyprspace,
 	nixcord,
         nix-revsocks, 
    #     lanzaboote, 
