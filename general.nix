@@ -20,6 +20,10 @@ in
     # (import ./modules/wallpaper-changer  { folder = "./wallpapers"; })
     #inputs.walker.packages.x86_64-linux.default
   ];
+#  home.activation.main = lib.hm.dag.entryAfter ["writeBoundary"]
+#    ''
+#	rm /home/spiderunderurbed/.gtkrc-2.0.backup	
+#    '';
   home.sessionVariables = {
 #GSK_RENDERER=gl
     BROWSER = "librewolf";
@@ -195,6 +199,13 @@ in
 #   hyprlock = hyprlockConfig;
 #    waybar = waybarConfig;
    # waybar = waybarConfig // { enable = true; };
+   # blesh.enable = true;
+   # direnv = {
+   #   enable = true;
+   #   enableBashIntegration = true; # see note on other shells below
+   #   nix-direnv.enable = true;
+   # };
+
     nixcord = {
       vesktop.enable = true;
       enable = lib.mkForce true;
@@ -265,10 +276,10 @@ in
 #        };
 #      };
 #       }
-      direnv = {
-        enable = true;
-        nix-direnv.enable = true;
-      };
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
     mpv = {
        enable = true;
 #    profiles = {
@@ -331,17 +342,26 @@ in
         #alias sudo='/run/wrappers/bin/sudo'
         export PATH=$PATH:/home/spiderunderurbed/.cargo/bin
  	export NIXPKGS_ALLOW_UNFREE=1
+	#export BLE_VERSION-=0.4.0-devel3+1a5c451c
         eval $(thefuck --alias)
         eval "$(zoxide init bash)"
+
+	hyfetch	
+	
+	eval "$(direnv hook bash)"
+	source "$(blesh-share)"/ble.sh --attach=none # does not work currently	 
+	ble-attach
 #	export NIXPKGS_ALLOW_UNFREE=1
 
         #eval ()
 #       clear
-        hyfetch
+        #hyfetch
 #       ##${keychain}/bin/keychain
 #        . ~/oldbashrc
 #	echo test
       '';
+##[[ ! ${BLE_VERSION-} ]] || 
+
     };
  #  nix-revsocks = {
  #       enable = true;

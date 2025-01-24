@@ -51,6 +51,11 @@ in
    services = {
     dunst = {
 	enable = true;
+
+	systemdOptions = {
+          Unit.wantedBy = [ "wayland-wm@Hyprland.service" ];
+    	};
+	
 	iconTheme = {
 	  name = "Adwaita";
 	  package = pkgs.adwaita-icon-theme;

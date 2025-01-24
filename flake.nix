@@ -8,7 +8,7 @@
        #url = "github:kaylorben/nixcord";
 #	url = "github:AwesomeQubic/nixcord";
 #	url = "github:SpiderUnderUrBed/nixcord/testing";
-	url = "github:SpiderUnderUrBed/nixcord";
+	url = "github:SpiderUnderUrBed/nixcord/main";
      };
 #    auto-cpufreq = {
 #      url = "github:AdnanHodzic/auto-cpufreq";

@@ -21,7 +21,8 @@
       name = "Papirus-Dark";
     };
     theme = {
-        name = lib.mkForce "catppuccin-macchiato-mauve-compact";
+	name = "catppuccin-macchiato-mauve-compact";
+     #   name = lib.mkForce "catppuccin-macchiato-mauve-compact";
         package = pkgs.catppuccin-gtk.override {
           accents = ["mauve"];
           variant = "macchiato";
