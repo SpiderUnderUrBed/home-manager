@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, specialArgs ? {}, ... }:
+{ pkgs, lib, inputs, specialArgs, ... }:
 #let keychain = pkgs.writeShellApplication {
 #       name = "keychain";
 #       runtimeInputs = [ pkgs.keychain ];
@@ -205,6 +205,86 @@ in
 #   '';
  #};
  programs = {
+#(vscode-with-extensions.override {
+           #vscodeExtensions = with vscode-extensions; [ 
+     vscode = {
+	enable = true;
+        extensions = with pkgs.vscode-extensions; [
+              svelte.svelte-vscode
+
+             (pkgs.vscode-utils.buildVscodeMarketplaceExtension { 
+                    mktplcRef = {
+                      name = "python";
+                      version = "1.19.1";
+
+                      publisher = "ms-python";
+                    };
+                    vsix = /home/spiderunderurbed/ms-python-latest.zip;
+
+               })
+
+              ritwickdey.liveserver
+              sswg.swift-lang
+              vadimcn.vscode-lldb
+              bbenoist.nix
+
+              ms-vscode-remote.remote-containers
+              ms-vscode-remote.remote-ssh
+
+              rust-lang.rust-analyzer
+              ms-azuretools.vscode-docker
+
+              eamodio.gitlens
+          ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+                #{
+                #name = "rust-analyzer";
+                #publisher = "rust-lang";
+                #version = "0.4.2314";
+                #hash = "sha256-cyeWqEqN3WVqBy8qVIXAof4LlW3FpcFV2HY7pIpBdzc=";
+                ##sha256 = "ef55fd16687dc34c503fda6e46b2e3e3184b570929632244258f0cd0cf49136a";
+                #}
+                {
+                name = "remove-comments";
+                publisher = "plibither8";
+                version = "1.2.2";
+                sha256 = "ca2ef0e0a937a3da822c849a98c587d280b464287f590883b4febb2ec186d7de";
+                }
+                {
+                name = "rustowl-vscode";
+                publisher = "cordx56";
+                version = "0.1.1";
+                sha256 = "c295da5fc07b966ae79b078c71aa0e64776dcdcdf9b099f263188cf3170231d4";
+                }
+                {
+                name = "vencord-companion";
+                publisher = "Vendicated";
+
+                version = "0.1.3";
+                sha256 = "9854440646f703deb7a5a1ec3e115a60b7c87c8ea0d17f46bbd45502d5e100e4";
+                }
+                {
+
+                 name = "codespaces";
+                 publisher = "Github";
+                 version = "1.16.17";
+                 sha256 = "e9c47ef5f69b8cba144f2dc4038f6aaef4274c52b45c6b533008a3db897d546a";
+                }
+                {
+                        name = "remote-ssh-edit";
+                        publisher = "ms-vscode-remote";
+                        version = "0.47.2";
+                        sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
+                }
+                {
+                        name = "Go";
+                        publisher = "golang";
+                        version = "0.42.0";
+                        sha256 = "f47c9ee44ccbb181fc5f718de3ee27de3349d4f603ec155fccef332a882141d5";
+                }
+
+          ];
+	};
+
 #   wofi = {
 #     enable = wofiEnable;
 #   };
@@ -225,10 +305,11 @@ neovim = {
   plugins = with pkgs.vimPlugins; [
     nvim-lspconfig
   ];
-  extraConfig = ''
-	set number
-	command! Ct :belowright split | resize 15 | terminal bash -c "cd %:p:h && exec bash"
-  '';
+  extraConfig = (builtins.readFile ./nvim.vim);
+#''
+#	set number
+#	command! Ct :belowright split | resize 15 | terminal bash -c "cd %:p:h && exec bash"
+#  '';
   extraLuaConfig = (builtins.readFile ./nvim.lua);
 };
 

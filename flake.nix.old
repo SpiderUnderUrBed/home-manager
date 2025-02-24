@@ -55,8 +55,8 @@
 #      inputs.nixpkgs.follows = "nixpkgs";
 #    };
    # nix-flatpak.url = "github:gmodena/nix-flatpak";
-   # nix-index-database.url = "github:nix-community/nix-index-database";
-    #nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -87,7 +87,7 @@
    #     lanzaboote, 
         #flake-parts, 
         #devenv,
-       # nix-index-database,
+        nix-index-database,
 	sublimation, 
         ... }:
   let
@@ -114,37 +114,45 @@
     };
       #hm-lib = home-manager.lib;
       hm-modules = [
+	  nix-index-database.hmModules.nix-index
           sublimation.homeManagerModules.sublimation
           nixcord.homeManagerModules.nixcord
+	  #(import ./general.nix { 
+            #      inherit 
+            #         pkgs 
+            #         lib
+                     #   config
+                     #(specialArgs = { inherit gitCredentialManager; }) 
+#                     specialArgs = newSpecialArgs;
+           #          specialArgs
+          #           gitCredentialManager;
+#                  lib = home-manager.lib;  
+         # })
+
       ];	
-      #specialArgs = { 
-	     #inherit 
-	#	gitCredentialManager
-	#	home-manager 
-	#	hm-modules;
+      specialArgs = { 
+	     inherit 
+		gitCredentialManager
+		home-manager 
+		hm-modules;
 	#	isSpecialisation = false;
-	# };
+	 };
       lib = pkgs.lib;
       mkNixosHost = import ./hydenix/hosts/nixos;
       nix-vm = import ./hydenix/hosts/vm/nix-vm.nix;
       userConfig = import ./hydenix/config.nix;
-      #commonArgs = {
-      #  inherit
-      #    nixpkgs
-      #    pkgs
-      #    home-manager
-      #    system
-      #    userConfig
-         # nix-index-database
-      #    ;
-      #};
-       extraSpecialArgs = {
-          inherit userConfig inputs gitCredentialManager hm-modules home-manager;
-       };
+      commonArgs = {
+        inherit
+          nixpkgs
+          pkgs
+          home-manager
+          system
+          userConfig
+          nix-index-database
+          ;
+      };
   in
   {
-
-	#inherit specialArgs;
  #   nixosConfigurations.daspidercave = nixpkgs.lib.nixosSystem {
  #     inherit system;
  #     modules = [
@@ -156,9 +164,8 @@
 #        { home-manager.extraSpecialArgs = { gitCredentialManager = gitCredentialManager; }; }	
 #	];
 #    };
-    #nixosConfigurations.spiderunderurbed = self.homeConfigurations;
+    nixosConfigurations.spiderunderurbed = self.homeConfigurations;
     homeConfigurations = {
-      #inherit extraSpecialArgs;
       home-manager.useGlobalPkgs = true;      
       #home-manager.useUserPackages = false;
 #      home-manager.specialisation.hydenix.configuration = {
@@ -166,21 +173,55 @@
 #               ./hydenix/hosts/nixos/home.nix
 #         ];
 #      }; 
-      
       spiderunderurbed = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs extraSpecialArgs; 
-
+        inherit pkgs;
+#	home.
+#          specialisation.hydenix.configuration = {
+#            modules = hm-modules ++ [
+#                 ./hydenix/hosts/nixos/home.nix
+#            ];
+#          }; 
+	#};
+	
+# gitCredentialManager; 
+#system;
+#        homeDirectory = "/home/spiderunderurbed";
+#        username = "spiderunderurbed";
+#	extraSpecialArgs = {
+ #          gitCredentialManager = gitCredentialManager;
+#	   
+ #       };
+#	  specialisation.hydenix.configuration = {
+#		modules = hm-modules ++ [
+#			./hydenix/hosts/nixos/home.nix
+#		];
+#	  }; 
+          extraSpecialArgs = {
+            inherit userConfig;
+            inherit inputs;
+          };
         #imports = [
 	#shared
 	#imports = [inputs.walker.homeManagerModules.default];
 	modules = [
-	  {
-	    #inherit specialArgs;
-	    imports = [
-		  ./home.nix
-		];
-	  }		
+          (import ./home.nix { 
+                inherit 
+                   pkgs 
+                   lib
+                   #config
+		   inputs
+                   #(specialArgs = { inherit gitCredentialManager; }) 
+                   specialArgs
+                   gitCredentialManager; 
+                })		
 	];
+ #       home = {
+ #         stateVersion = "23.11";
+ #         packages = [
+#             gitCredentialManager
+ #         ];
+ #       };
+
 	};
     };
   };

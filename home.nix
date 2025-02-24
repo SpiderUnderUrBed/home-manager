@@ -1,6 +1,7 @@
-{ pkgs, lib, inputs, specialArgs ? {}, ... }:
+{ pkgs, lib, inputs, specialArgs, ... }:
 let
   gitCredentialManager = specialArgs.gitCredentialManager;
+  enableGeneral = false;
   general = (import ./general.nix { 
    inherit 
     pkgs 
@@ -35,23 +36,12 @@ in
   
     home.enableNixpkgsReleaseCheck = false;
     home.stateVersion = "24.11";
-    specialisation.general.configuration = {
+    specialisation.general.configuration = lib.mkIf enableGeneral {
       imports = 
 	#specialArgs.hm-modules ++ [ 
-	 [
-#	  ./themes
-#	  (import ./general.nix { 
-#                  inherit 
-#                     pkgs 
-#                     lib
-#                     #   config
-#                     #(specialArgs = { inherit gitCredentialManager; }) 
-##                     specialArgs = newSpecialArgs;
-#                     specialArgs
-#                     gitCredentialManager;
-#                  lib = home-manager.lib;  
-#          })
-      ];
+	 	[
+		general
+      		];
     };  
     specialisation.hydenix.configuration = {
          imports = 
