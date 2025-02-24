@@ -5,7 +5,10 @@
  #       text = "keychain --eval --agents ssh id_ecdsa_sk --timeout 5";  
 #    };
 # in
-let keychain = "null";
+let 
+keychain = "null";
+browser = "brave";
+terminal = "konsole";
 in
 {
  # imports = lib.attrValues nur.repos.moredhel.hmModules.rawModules;
@@ -24,6 +27,18 @@ in
 #    ''
 #	rm /home/spiderunderurbed/.gtkrc-2.0.backup	
 #    '';
+  xdg.desktopEntries = {
+   nvim = {
+     icon = "/home/spiderunderurbed/neovim.svg";
+     name = "neovim";
+     exec = "${terminal} -e nvim";
+   };
+   discord = {
+    icon = "/home/spiderunderurbed/vencord.png";
+    name = "vesktop";
+    exec = "${browser} --app=https://discord.com/app";
+   };
+  };
   home.sessionVariables = {
 #GSK_RENDERER=gl
     BROWSER = "librewolf";
@@ -205,7 +220,35 @@ in
    #   enableBashIntegration = true; # see note on other shells below
    #   nix-direnv.enable = true;
    # };
+neovim = {
+  enable = true;
+  plugins = with pkgs.vimPlugins; [
+    nvim-lspconfig
+  ];
+  extraConfig = ''
+	set number
+	command! Ct :belowright split | resize 15 | terminal bash -c "cd %:p:h && exec bash"
+  '';
+  extraLuaConfig = (builtins.readFile ./nvim.lua);
+};
 
+ #   neovim = {
+#	enable = true;
+#	plugins = with pkgs.vimPlugins; [
+      #		nvim-lspconfig
+	#];
+	#extraConfig = ''
+	 #require'lspconfig'.rust_analyzer.setup{
+  	 # settings = {
+    	 #  ['rust-analyzer'] = {
+      	#	diagnostics = {
+        #	  enable = false;
+      	#	}
+    	   #   }
+  	  #  }
+	 # }
+	#'';
+    #};
     nixcord = {
       vesktop.enable = true;
       enable = lib.mkForce true;
@@ -220,6 +263,11 @@ in
       extraConfig = {
 	
 	plugins = {
+	review.enable = true;
+	PinDMs.enable = true;
+	noBlockedMessages = {
+	  enable = true;
+	};
 	vc-betterActivities.enable = true;
 #	noDevtoolsWarning = true;
 	hideUsers.enable = true;
