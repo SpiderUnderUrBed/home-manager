@@ -4,12 +4,12 @@
   inputs = {
 #    nixpkgs.url = "github:NixOS/nixpkgs/71e91c409d1e654808b2621f28a327acfdad8dc2";
      nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-     nixcord = {
+     #nixcord = {
        #url = "github:kaylorben/nixcord";
 #	url = "github:AwesomeQubic/nixcord";
 #	url = "github:SpiderUnderUrBed/nixcord/testing";
-	url = "github:SpiderUnderUrBed/nixcord/main";
-     };
+#	url = "github:SpiderUnderUrBed/nixcord/main";
+#     };
 #    auto-cpufreq = {
 #      url = "github:AdnanHodzic/auto-cpufreq";
 #      inputs.nixpkgs.follows = "nixpkgs";
@@ -82,7 +82,7 @@
 	hyprland, 
 	hyprland-plugins,
 #	hyprspace,
-	nixcord,
+#	nixcord,
         nix-revsocks, 
    #     lanzaboote, 
         #flake-parts, 
@@ -91,6 +91,7 @@
 	sublimation, 
         ... }:
   let
+    nixcord = builtins.getFlake "/home/spiderunderurbed/projects/nixcord";
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
     gitCredentialManager = import ./gcm.nix {
@@ -172,8 +173,11 @@
 
         #imports = [
 	#shared
-	#imports = [inputs.walker.homeManagerModules.default];
+#	imports = [inputs.walker.homeManagerModules.default];
+#	inputs.walker.homeManagerModules.default
 	modules = [
+	  inputs.walker.homeManagerModules.default
+	  nixcord.homeManagerModules.nixcord
 	  {
 	    #inherit specialArgs;
 	    imports = [

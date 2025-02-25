@@ -207,6 +207,26 @@ in
  programs = {
 #(vscode-with-extensions.override {
            #vscodeExtensions = with vscode-extensions; [ 
+     zed-editor = {
+	enable = true;
+	extensions = ["nix" "toml" "make"];
+	installRemoteServer = true;
+	userSettings = {
+        lsp = {
+           rust-analyzer = {
+             binary = {
+                        #                        path = lib.getExe pkgs.rust-analyzer;
+               path_lookup = true;
+             };
+           };
+           nix = { 
+               binary = { 
+                 path_lookup = true; 
+              }; 
+           };
+	};
+     };
+     };
      vscode = {
 	enable = true;
         extensions = with pkgs.vscode-extensions; [

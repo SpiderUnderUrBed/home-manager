@@ -11,7 +11,7 @@ hyprlandConfig = ((import ./hyprland/hyprland.nix) {  lib = lib; pkgs = pkgs; in
 hyprlockConfig = ((import ./hyprland/hyprlock.nix) { lib = lib; pkgs = pkgs; }) // { enable = true; };
 in 
 {
-   imports = [inputs.walker.homeManagerModules.default];
+   #imports = [inputs.walker.homeManagerModules.default];
    wayland.windowManager.hyprland = 
      hyprlandConfig;
 
