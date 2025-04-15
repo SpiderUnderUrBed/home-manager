@@ -91,8 +91,8 @@ nnoremap <C-j> gqap
 inoremap <C-j> <C-o>gqap
 
 " ^C: Show Cursor Position
-nnoremap <C-c> :echo "Line: " . line('.') . ", Col: " . col('.')<CR>
-inoremap <C-c> <C-o>:echo "Line: " . line('.') . ", Col: " . col('.')<CR>
+nnoremap <M-c> :echo "Line: " . line('.') . ", Col: " . col('.')<CR>
+inoremap <M-c> <C-o>:echo "Line: " . line('.') . ", Col: " . col('.')<CR>
 
 " ^T: Spell Check Toggle
 nnoremap <C-t> :setlocal spell!<CR>

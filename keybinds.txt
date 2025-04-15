@@ -1,0 +1,119 @@
+===============================================
+             Vim Keybindings Overview
+         (Nano-style and Terminal Toggle)
+===============================================
+
+[ General Settings ]
+--------------------
+- set number
+  Show line numbers.
+
+- :Ct
+  Custom command to open a terminal in a split (15 lines high),
+  with the working directory set to the current file's location.
+
+------------------------------------------------
+
+[ Terminal Toggle (F12) ]
+--------------------------
+Function: ToggleTerminalSwitch()
+
+- Toggles between the terminal window and last-used text window.
+- Always returns to insert mode after switching.
+
+Keybindings:
+  Insert Mode:  F12  ->  Toggle terminal window
+  Terminal Mode: F12 ->  Leave terminal mode and toggle back
+
+------------------------------------------------
+
+[ Nano-Style Keybindings ]
+---------------------------
+
+Ctrl+G  : Open help (equivalent to Nano's Help)
+  Normal/Insert Mode -> :help
+
+Ctrl+X  : Quit current buffer (Exit)
+  Normal/Insert Mode -> :q
+
+Ctrl+O  : Write current file (Save)
+  Normal/Insert Mode -> :w
+
+Ctrl+R  : Insert file at cursor (Read File)
+  Normal/Insert Mode -> Prompt for filename and insert contents
+
+Ctrl+W  : Search (Where Is)
+  Normal/Insert Mode -> /
+
+Ctrl+Y  : Page Up (Previous Page)
+  Normal/Insert Mode -> <C-b>
+
+Ctrl+V  : Page Down (Next Page)
+  Normal/Insert Mode -> <C-f>
+
+Ctrl+K  : Delete (Cut Line)
+  Normal Mode -> Delete line
+  Insert Mode -> Delete line (via <C-o>)
+  Visual Mode -> Delete selection
+
+Ctrl+U  : Paste last yanked/deleted text (Uncut)
+  Normal/Insert Mode -> Paste below
+
+Ctrl+J  : Format current paragraph (Justify)
+  Normal/Insert Mode -> gqap
+
+Ctrl+C  : Show cursor position (Line and Column)
+  Normal/Insert Mode -> :echo "Line: ..., Col: ..."
+
+Ctrl+T  : Toggle spell checking
+  Normal/Insert Mode -> :setlocal spell!
+
+Ctrl+_  : Go to line
+  Normal/Insert Mode -> Prompt for line number and jump
+
+Ctrl+\  : Start search & replace
+  Normal/Insert Mode -> :%s///g
+
+Alt+U   : Undo
+  Normal/Insert Mode -> Undo last change
+
+Alt+E   : Redo
+  Normal/Insert Mode -> Redo last undo
+
+------------------------------------------------
+
+[ Visual Mode Toggle ]
+-----------------------
+Ctrl+^  : Toggle visual selection
+  Normal Mode -> Enter visual mode
+  Visual Mode -> Exit visual mode
+  Insert Mode -> Start visual mode (via <C-o>)
+
+------------------------------------------------
+
+[ Navigation ]
+---------------
+Alt+\    : Go to top of file (gg)
+  Normal/Insert Mode
+
+Alt+/    : Go to bottom of file (G)
+  Normal/Insert Mode
+
+------------------------------------------------
+
+[ Save Anywhere ]
+------------------
+Ctrl+S  : Save current buffer
+  Works in Normal, Insert, and Visual Modes
+
+================================================
+
+[ Clipboard Integration ]
+--------------------------
+Ctrl+Y  : Yank line to clipboard
+  Normal Mode -> Copies current line to system clipboard ("+ register)
+  Visual Mode -> Copies selected text to system clipboard
+
+  Requirements:
+    - 'wl-clipboard' or equivalent clipboard integration
+    - Works best in Wayland/X11 with correct clipboard setup

@@ -5,12 +5,12 @@
 #      enable = true;
 #      platformTheme.name = "gtk";
 #  };
-#  home.pointerCursor = {
+  home.pointerCursor = {
 #    gtk.enable = true;
-#    package = pkgs.bibata-cursors;
-#    name = "Bibata-Modern-Classic";
-#    size = lib.mkForce 20;
-#  };
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = lib.mkForce 20;
+  };
   gtk = {
     enable = true;
     iconTheme = {
@@ -31,11 +31,13 @@
     };
     gtk3.extraConfig = {
       Settings = ''
+	gtk-cursor-theme-size=20
         gtk-application-prefer-dark-theme=1
       '';
     };
     gtk4.extraConfig = {
       Settings = ''
+	gtk-cursor-theme-size=20
         gtk-application-prefer-dark-theme=1
       '';
     };

@@ -22,6 +22,7 @@ in
   home.packages = [
     # (import ./modules/wallpaper-changer  { folder = "./wallpapers"; })
     #inputs.walker.packages.x86_64-linux.default
+    pkgs.bash
   ];
 #  home.activation.main = lib.hm.dag.entryAfter ["writeBoundary"]
 #    ''
@@ -207,6 +208,12 @@ in
  programs = {
 #(vscode-with-extensions.override {
            #vscodeExtensions = with vscode-extensions; [ 
+     nvchad = {
+	enable = false;
+	extraPackages = with pkgs; [
+		rust-analyzer
+	];
+     };
      zed-editor = {
 	enable = true;
 	extensions = ["nix" "toml" "make"];
@@ -229,6 +236,14 @@ in
      };
      vscode = {
 	enable = true;
+	userSettings = {
+           "terminal.integrated.defaultProfile.linux" = "bash";
+           "terminal.integrated.profiles.linux" = {
+           "bash" = {
+              "path" = pkgs.bash;
+            };
+          };
+	};
         extensions = with pkgs.vscode-extensions; [
               svelte.svelte-vscode
 
@@ -358,7 +373,7 @@ neovim = {
 #	hideUsers = "github:SpiderUnderUrBed/hideUsers/7ab6d9d74d393b56684da7760fbe44e5684c1924";
 	vc-betterActivities = "github:D3SOX/vc-betterActivities/b42afcd35d0ade108114b301859c7a077f45a8d5";
 #	hideUsers = "git+file:///home/spiderunderurbed/projects/vesktop/hideUsers/target/debug/userplugins/hideUser?ref=059e3d299c0f948d0711c04a6f69375e4ed2eee2";
-	hideUsers = "/home/spiderunderurbed/projects/vesktop/attempt-2/hideUsers";
+	#hideUsers = "/home/spiderunderurbed/projects/vesktop/attempt-2/hideUsers";
 	#hideUsers = "git+file:///home/spiderunderurbed/Documents/Vencord/src/userplugins/hideUser?ref=79e77997b25c324bad86e8f8332babdc846b6182";
      };
       extraConfig = {
@@ -369,9 +384,10 @@ neovim = {
 	noBlockedMessages = {
 	  enable = true;
 	};
+	noUnblockToJump.enable = true;
 	vc-betterActivities.enable = true;
 #	noDevtoolsWarning = true;
-	hideUsers.enable = true;
+	#hideUsers.enable = true;
 	};
       };
       config = {

@@ -2,14 +2,19 @@
   description = "My project using personal NUR repository";
 
   inputs = {
-#    nixpkgs.url = "github:NixOS/nixpkgs/71e91c409d1e654808b2621f28a327acfdad8dc2";
+#    nixpkgs.url = "github:NixOS/nixpkgs/70e91c409d1e654808b2621f28a327acfdad8dc2";
      nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-     #nixcord = {
-       #url = "github:kaylorben/nixcord";
+     nvchad3nix = {
+      url = "github:nix-community/nix3nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+     };
+ #    nixcord = {
+#       url = "github:kaylorben/nixcord";
 #	url = "github:AwesomeQubic/nixcord";
 #	url = "github:SpiderUnderUrBed/nixcord/testing";
 #	url = "github:SpiderUnderUrBed/nixcord/main";
-#     };
+#	url = "/home/spiderunderurbed/projects/nixcord";
+  #   };
 #    auto-cpufreq = {
 #      url = "github:AdnanHodzic/auto-cpufreq";
 #      inputs.nixpkgs.follows = "nixpkgs";
@@ -79,6 +84,7 @@
   #      nix-software-center, 
   #      flake-compat, 
 #       wallpaper-changer,
+	nvchad4nix,
 	hyprland, 
 	hyprland-plugins,
 #	hyprspace,
@@ -115,8 +121,8 @@
     };
       #hm-lib = home-manager.lib;
       hm-modules = [
-          sublimation.homeManagerModules.sublimation
-          nixcord.homeManagerModules.nixcord
+          #sublimation.homeManagerModules.sublimation
+          #nixcord.homeManagerModules.nixcord
       ];	
       #specialArgs = { 
 	     #inherit 
@@ -181,6 +187,7 @@
 	  {
 	    #inherit specialArgs;
 	    imports = [
+		  inputs.nvchad4nix.homeManagerModule
 		  ./home.nix
 		];
 	  }		
