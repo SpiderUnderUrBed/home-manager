@@ -208,12 +208,12 @@ in
  programs = {
 #(vscode-with-extensions.override {
            #vscodeExtensions = with vscode-extensions; [ 
-     nvchad = {
-	enable = false;
-	extraPackages = with pkgs; [
-		rust-analyzer
-	];
-     };
+    # nvchad = {
+    #	enable = false;
+    #	extraPackages = with pkgs; [
+    #		rust-analyzer
+    #	];
+    # };
      zed-editor = {
 	enable = true;
 	extensions = ["nix" "toml" "make"];
@@ -268,7 +268,7 @@ in
 
               rust-lang.rust-analyzer
               ms-azuretools.vscode-docker
-
+	      arrterian.nix-env-selector
               eamodio.gitlens
           ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
                 #{

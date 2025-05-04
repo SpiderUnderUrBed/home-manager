@@ -4,10 +4,10 @@
   inputs = {
 #    nixpkgs.url = "github:NixOS/nixpkgs/70e91c409d1e654808b2621f28a327acfdad8dc2";
      nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-     nvchad3nix = {
-      url = "github:nix-community/nix3nvchad";
-      inputs.nixpkgs.follows = "nixpkgs";
-     };
+#     nvchad3nix = {
+#      url = "github:nix-community/nix3nvchad";
+#      inputs.nixpkgs.follows = "nixpkgs";
+#     };
  #    nixcord = {
 #       url = "github:kaylorben/nixcord";
 #	url = "github:AwesomeQubic/nixcord";
@@ -84,7 +84,7 @@
   #      nix-software-center, 
   #      flake-compat, 
 #       wallpaper-changer,
-	nvchad4nix,
+#	nvchad4nix,
 	hyprland, 
 	hyprland-plugins,
 #	hyprspace,
@@ -187,7 +187,7 @@
 	  {
 	    #inherit specialArgs;
 	    imports = [
-		  inputs.nvchad4nix.homeManagerModule
+		  #inputs.nvchad4nix.homeManagerModule
 		  ./home.nix
 		];
 	  }		
