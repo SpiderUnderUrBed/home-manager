@@ -28,7 +28,8 @@ in
 #    ''
 #	rm /home/spiderunderurbed/.gtkrc-2.0.backup	
 #    '';
-  xdg.desktopEntries = {
+  xdg = {
+   desktopEntries = {
    nvim = {
      icon = "/home/spiderunderurbed/neovim.svg";
      name = "neovim";
@@ -39,6 +40,16 @@ in
     name = "vesktop";
     exec = "${browser} --app=https://discord.com/app";
    };
+  };
+  portal = {
+      enable = true;
+      extraPortals = with pkgs; lib.mkForce [
+        #xdg-desktop-portal-gtk
+        kdePackages.xdg-desktop-portal-kde
+        xdg-desktop-portal-hyprland
+      ];
+      xdgOpenUsePortal = true;
+    };
   };
   home.sessionVariables = {
 #GSK_RENDERER=gl
@@ -263,6 +274,8 @@ in
               vadimcn.vscode-lldb
               bbenoist.nix
 
+	      #wayou.vscode-todo-highlight
+		
               ms-vscode-remote.remote-containers
               ms-vscode-remote.remote-ssh
 
@@ -278,6 +291,13 @@ in
                 #hash = "sha256-cyeWqEqN3WVqBy8qVIXAof4LlW3FpcFV2HY7pIpBdzc=";
                 ##sha256 = "ef55fd16687dc34c503fda6e46b2e3e3184b570929632244258f0cd0cf49136a";
                 #}
+		#wayou.vscode-todo-highlight
+		{
+		name="vscode-todo-highlight";
+		publisher="wayou";
+		sha256="1sg4zbr1jgj9adsj3rik5flcn6cbr4k2pzxi446rfzbzvcqns189";
+		version="1.0.5";	
+		}
                 {
                 name = "remove-comments";
                 publisher = "plibither8";
@@ -506,9 +526,10 @@ neovim = {
 
         #alias sudo='/run/wrappers/bin/sudo'
         export PATH=$PATH:/home/spiderunderurbed/.cargo/bin
- 	export NIXPKGS_ALLOW_UNFREE=1
+	export PATH=$PATH:/home/spiderunderurbed/.local/bin 
+	export NIXPKGS_ALLOW_UNFREE=1
 	#export BLE_VERSION-=0.4.0-devel3+1a5c451c
-        eval $(thefuck --alias)
+        #eval $(thefuck --alias)
         eval "$(zoxide init bash)"
 
 	hyfetch	

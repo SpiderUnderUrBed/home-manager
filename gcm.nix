@@ -64,23 +64,27 @@ buildDotnetModule rec {
   # For some reason, Avalonia **really** wants to probe a bunch of names for
   # libSkiaSharp. Moreover, the .so files installed directly by .NET are not
   # properly loaded and need to manually be added to the LD_LIBRARY_PATH.
-  postFixup = ''
-    ln -s $out/lib/git-credential-manager/libSkiaSharp.so \
-      $out/lib/git-credential-manager/liblibSkiaSharp.so
-    ln -s $out/lib/git-credential-manager/libSkiaSharp.so \
-      $out/lib/git-credential-manager/liblibSkiaSharp
-    ln -s $out/lib/git-credential-manager/libSkiaSharp.so \
-      $out/lib/git-credential-manager/libSkiaSharp
+postFixup = ''
+  skiaDir="$out/lib/git-credential-manager"
+  skia="$skiaDir/libSkiaSharp.so"
 
-    mkdir -p $out/bin/unpatched
-    for executable in $out/bin/*; do
-      if [ "$(basename $executable)" != unpatched ]; then
-        mv $executable $out/bin/unpatched
-        makeWrapper $out/bin/unpatched/$(basename $executable) $executable \
-          --suffix LD_LIBRARY_PATH : $out/lib/git-credential-manager
-      fi
-    done
-  '';
+  if [ -f "$skia" ]; then
+    ln -s libSkiaSharp.so "$skiaDir/liblibSkiaSharp.so"
+    ln -s libSkiaSharp.so "$skiaDir/liblibSkiaSharp"
+    ln -s libSkiaSharp.so "$skiaDir/libSkiaSharp"
+  else
+    echo "Warning: libSkiaSharp.so not found in $skiaDir"
+  fi
+
+  mkdir -p $out/bin/unpatched
+  for executable in $out/bin/*; do
+    if [ "$(basename $executable)" != "unpatched" ]; then
+      mv $executable $out/bin/unpatched
+      makeWrapper $out/bin/unpatched/$(basename $executable) $executable \
+        --suffix LD_LIBRARY_PATH : $out/lib/git-credential-manager
+    fi
+  done
+'';
 
   meta = with lib; {
     homepage = "https://github.com/GitCredentialManager/git-credential-manager";

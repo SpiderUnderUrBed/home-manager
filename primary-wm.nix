@@ -82,6 +82,13 @@ in
  #   };
     dunst = {
     enable = true;
+    package = pkgs.writeShellScriptBin "dunst" ''
+      if [ "$XDG_CURRENT_DESKTOP" = "KDE" ] || [ "$DESKTOP_SESSION" = "plasma" ]; then
+        echo "Dunst: Not starting because session is KDE Plasma."
+        exit 0
+      fi
+      exec ${pkgs.dunst}/bin/dunst "$@"
+    '';
     settings = {
       global = {
         follow = "mouse";

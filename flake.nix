@@ -8,13 +8,14 @@
 #      url = "github:nix-community/nix3nvchad";
 #      inputs.nixpkgs.follows = "nixpkgs";
 #     };
- #    nixcord = {
+#     nixcord = {
 #       url = "github:kaylorben/nixcord";
 #	url = "github:AwesomeQubic/nixcord";
 #	url = "github:SpiderUnderUrBed/nixcord/testing";
-#	url = "github:SpiderUnderUrBed/nixcord/main";
-#	url = "/home/spiderunderurbed/projects/nixcord";
-  #   };
+#	url = "github:SpiderUnderUrBed/nixcord";
+
+	#url = "/home/spiderunderurbed/projects/nixcord";
+ #    };
 #    auto-cpufreq = {
 #      url = "github:AdnanHodzic/auto-cpufreq";
 #      inputs.nixpkgs.follows = "nixpkgs";
@@ -183,7 +184,8 @@
 #	inputs.walker.homeManagerModules.default
 	modules = [
 	  inputs.walker.homeManagerModules.default
-	  nixcord.homeManagerModules.nixcord
+	  nixcord.homeModules.nixcord
+	  #nixcord.homeManagerModules.nixcord
 	  {
 	    #inherit specialArgs;
 	    imports = [

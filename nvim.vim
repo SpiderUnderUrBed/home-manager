@@ -1,3 +1,5 @@
+call plug#begin()
+
 set number
 
 command! Ct :belowright split | resize 15 | terminal bash -c "cd %:p:h && exec bash"
