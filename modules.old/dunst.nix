@@ -86,7 +86,8 @@ in {
       waylandDisplay = mkOption {
         type = types.str;
         default = "";
-        description = "Set the service's `WAYLAND_DISPLAY` environment variable.";
+        description =
+          "Set the service's `WAYLAND_DISPLAY` environment variable.";
       };
 
       settings = mkOption {
@@ -124,16 +125,17 @@ in {
         '';
       };
 
-systemdOptions = mkOption {
-  type = types.attrsOf (types.attrsOf (with types; either str (listOf str)));
-  default = {};
-  description = ''
-    Additional options for the Dunst systemd service. Keys correspond
-    to systemd sections (e.g., `Unit`, `Service`), and values are
-    mappings of systemd options within those sections. Values can be
-    strings or lists of strings.
-  '';
-};
+      systemdOptions = mkOption {
+        type =
+          types.attrsOf (types.attrsOf (with types; either str (listOf str)));
+        default = { };
+        description = ''
+          Additional options for the Dunst systemd service. Keys correspond
+          to systemd sections (e.g., `Unit`, `Service`), and values are
+          mappings of systemd options within those sections. Values can be
+          strings or lists of strings.
+        '';
+      };
 
     };
   };
@@ -188,29 +190,32 @@ systemdOptions = mkOption {
         category = categories;
       });
 
-systemd.user.services.dunst = {
-  Unit = mkMerge [
-    {
-      Description = "Dunst notification daemon";
-      After = "graphical-session-pre.target";
-      PartOf = "graphical-session.target";
-    }
-    (mkForce cfg.systemdOptions.Unit or {})
-  ];
+      systemd.user.services.dunst = {
+        Unit = mkMerge [
+          {
+            Description = "Dunst notification daemon";
+            After = "graphical-session-pre.target";
+            PartOf = "graphical-session.target";
+          }
+          (mkForce cfg.systemdOptions.Unit or { })
+        ];
 
-  Service = mkMerge [
-    {
-      Type = "dbus";
-      BusName = "org.freedesktop.Notifications";
-      ExecStart = escapeShellArgs ([ "${cfg.package}/bin/dunst" ] ++
-        optionals (cfg.configFile != null) [ "-config" cfg.configFile ]);
-      Environment = optionalString (cfg.waylandDisplay != "")
-        "WAYLAND_DISPLAY=${cfg.waylandDisplay}";
+        Service = mkMerge [
+          {
+            Type = "dbus";
+            BusName = "org.freedesktop.Notifications";
+            ExecStart = escapeShellArgs ([ "${cfg.package}/bin/dunst" ]
+              ++ optionals (cfg.configFile != null) [
+                "-config"
+                cfg.configFile
+              ]);
+            Environment = optionalString (cfg.waylandDisplay != "")
+              "WAYLAND_DISPLAY=${cfg.waylandDisplay}";
+          }
+          (cfg.systemdOptions.Service or { })
+        ];
+      };
     }
-    (cfg.systemdOptions.Service or {})
-  ];
- };
-}
 
     (mkIf (cfg.settings != { }) {
       xdg.configFile."dunst/dunstrc" = {

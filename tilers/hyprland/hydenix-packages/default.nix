@@ -5,9 +5,9 @@
     ./window-manager.nix
     ./dependencies.nix
     ./theming.nix
-#    ./applications.nix
+    #    ./applications.nix
     ./shell.nix
-#    ./gaming.nix
+    #    ./gaming.nix
     ./music.nix
   ];
 }

@@ -1,8 +1,7 @@
 { pkgs, ... }:
 let
   fonts = import ../../hydenix/hydenix/sources/hyde-fonts.nix { inherit pkgs; };
-in
-{
+in {
   home.packages = with pkgs; [
     # --------------------------------------------------- // Dependencies
     polkit_gnome # authentication agent
@@ -11,7 +10,7 @@ in
     # TODO: build python-pyamdgpuinfo from https://github.com/mark9064/pyamdgpuinfo
     # python-pyamdgpuinfo # for amd gpu info
     parallel # for parallel processing
- #   jq # for json processing
+    #   jq # for json processing
     imagemagick # for image processing
     libsForQt5.qtimageformats # for dolphin image thumbnails
     libsForQt5.ffmpegthumbs # for dolphin video thumbnails
@@ -39,7 +38,7 @@ in
     mesa # for gpu support
     dconf # for dconf support
 
-#    home-manager # for home-manager
+    #    home-manager # for home-manager
 
     # TODO: check these packages if they are even needed 
     xdg-utils # for xdg-open

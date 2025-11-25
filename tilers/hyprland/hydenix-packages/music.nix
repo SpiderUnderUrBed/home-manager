@@ -5,6 +5,6 @@
     # --------------------------------------------------- // Music
     cava # audio visualizer
     spicetify-cli # cli to customize spotify client
-#    spotify # spotify client
+    #    spotify # spotify client
   ];
 }

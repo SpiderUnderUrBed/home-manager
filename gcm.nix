@@ -1,20 +1,8 @@
-{ pkgs 
-, git-credential-manager
-, lib
-, stdenv
-, fetchFromGitHub
-, dpkg
-, dotnet-sdk
-, buildDotnetModule
-, dotnetCorePackages
-, xorg
+{ pkgs, git-credential-manager, lib, stdenv, fetchFromGitHub, dpkg, dotnet-sdk
+, buildDotnetModule, dotnetCorePackages, xorg
 #, libICE
 #, libSM
-, fontconfig
-, libsecret
-, git
-, mkShell
-}:
+, fontconfig, libsecret, git, mkShell }:
 # The rest of your code remains unchanged...
 
 buildDotnetModule rec {
@@ -64,31 +52,32 @@ buildDotnetModule rec {
   # For some reason, Avalonia **really** wants to probe a bunch of names for
   # libSkiaSharp. Moreover, the .so files installed directly by .NET are not
   # properly loaded and need to manually be added to the LD_LIBRARY_PATH.
-postFixup = ''
-  skiaDir="$out/lib/git-credential-manager"
-  skia="$skiaDir/libSkiaSharp.so"
+  postFixup = ''
+    skiaDir="$out/lib/git-credential-manager"
+    skia="$skiaDir/libSkiaSharp.so"
 
-  if [ -f "$skia" ]; then
-    ln -s libSkiaSharp.so "$skiaDir/liblibSkiaSharp.so"
-    ln -s libSkiaSharp.so "$skiaDir/liblibSkiaSharp"
-    ln -s libSkiaSharp.so "$skiaDir/libSkiaSharp"
-  else
-    echo "Warning: libSkiaSharp.so not found in $skiaDir"
-  fi
-
-  mkdir -p $out/bin/unpatched
-  for executable in $out/bin/*; do
-    if [ "$(basename $executable)" != "unpatched" ]; then
-      mv $executable $out/bin/unpatched
-      makeWrapper $out/bin/unpatched/$(basename $executable) $executable \
-        --suffix LD_LIBRARY_PATH : $out/lib/git-credential-manager
+    if [ -f "$skia" ]; then
+      ln -s libSkiaSharp.so "$skiaDir/liblibSkiaSharp.so"
+      ln -s libSkiaSharp.so "$skiaDir/liblibSkiaSharp"
+      ln -s libSkiaSharp.so "$skiaDir/libSkiaSharp"
+    else
+      echo "Warning: libSkiaSharp.so not found in $skiaDir"
     fi
-  done
-'';
+
+    mkdir -p $out/bin/unpatched
+    for executable in $out/bin/*; do
+      if [ "$(basename $executable)" != "unpatched" ]; then
+        mv $executable $out/bin/unpatched
+        makeWrapper $out/bin/unpatched/$(basename $executable) $executable \
+          --suffix LD_LIBRARY_PATH : $out/lib/git-credential-manager
+      fi
+    done
+  '';
 
   meta = with lib; {
     homepage = "https://github.com/GitCredentialManager/git-credential-manager";
-    description = "Secure, cross-platform Git credential storage with authentication to GitHub, Azure Repos, and other popular Git hosting services";
+    description =
+      "Secure, cross-platform Git credential storage with authentication to GitHub, Azure Repos, and other popular Git hosting services";
     longDescription = ''
       Git Credential Manager (GCM) is a secure Git credential helper built on .NET that runs on Windows, macOS, and Linux.
 

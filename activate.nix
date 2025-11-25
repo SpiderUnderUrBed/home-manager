@@ -1,4 +1,4 @@
-{ specialArgs, pkgs, lib, ... }: 
+{ specialArgs, pkgs, lib, ... }:
 let
   enable = false;
   type = "general";
@@ -7,10 +7,8 @@ let
   myDerivation = pkgs.stdenv.mkDerivation rec {
     pname = "specializations";
     version = "1.0";
-    src = ./.;  # The source directory containing default.sh
-    env = {
-	inherit type;
-    };
+    src = ./.; # The source directory containing default.sh
+    env = { inherit type; };
     # Define the resolution using resholve.phraseSolution
     installPhase = ''
       # Ensure the output directory exists
@@ -21,13 +19,18 @@ let
       cat $src/default.sh >> $out/default.sh
       chmod +x $out/default.sh
       ${pkgs.resholve.phraseSolution "default-specializations" {
-        scripts = [ "default.sh" ];  # Specify the script to resolve
-        interpreter = "${pkgs.bash}/bin/bash";  # Specify the interpreter
-        inputs = [ pkgs.coreutils pkgs.bash pkgs.home-manager pkgs.gawk ];  # Specify input dependencies
-	execer = [
-	  "cannot:${pkgs.home-manager}/bin/home-manager"
-	  "cannot:home-manager"
-	];
+        scripts = [ "default.sh" ]; # Specify the script to resolve
+        interpreter = "${pkgs.bash}/bin/bash"; # Specify the interpreter
+        inputs = [
+          pkgs.coreutils
+          pkgs.bash
+          pkgs.home-manager
+          pkgs.gawk
+        ]; # Specify input dependencies
+        execer = [
+          "cannot:${pkgs.home-manager}/bin/home-manager"
+          "cannot:home-manager"
+        ];
       }}
 
       # Optionally, run the script and log the output (uncomment if necessary)
@@ -41,13 +44,13 @@ let
     };
   };
 
-in
-{
+in {
   home.activation = lib.mkIf enable {
-    startup = specialArgs.home-manager.lib.hm.dag.entryAfter [ "writeBoundry" ] ''
-      # Ensure the resolved script is called during activation
-      echo "Invoking resolved script at: ${myDerivation}/default.sh"
-      ${myDerivation}/default.sh  # Run the resolved script
-    '';
+    startup =
+      specialArgs.home-manager.lib.hm.dag.entryAfter [ "writeBoundry" ] ''
+        # Ensure the resolved script is called during activation
+        echo "Invoking resolved script at: ${myDerivation}/default.sh"
+        ${myDerivation}/default.sh  # Run the resolved script
+      '';
   };
 }

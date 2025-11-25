@@ -1,7 +1,6 @@
-{ pkgs, lib, ... }: 
-{
+{ pkgs, lib, ... }: {
   qt = {
-      enable = true;
-      platformTheme.name = "gtk";
+    enable = true;
+    platformTheme.name = "gtk";
   };
 }
